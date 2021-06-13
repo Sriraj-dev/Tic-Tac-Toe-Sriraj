@@ -170,19 +170,151 @@ class _Game2State extends State<Game2> {
   }
 
   void performstep() {
-    do {
-      Random random = new Random();
-      int r = random.nextInt(9);
-      if (buttons[r].letter == 'A') {
-        buttons[r].letter = autokey;
-        buttons[r].img = autoimg;
-        buttons[r].disabled = true;
-        print('button - $r is disabled');
-        count += 1;
-        isplaying = true;
-        turn = '${data['player']} Turn';
+    int r = aistep();
+    print('R is $r');
+    buttons[r].letter = autokey;
+    buttons[r].img = autoimg;
+    buttons[r].disabled = true;
+    print('button - $r is disabled');
+    count += 1;
+    isplaying = true;
+    turn = '${data['player']} Turn';
+    // do {
+    //   Random random = new Random();
+    //   int r = random.nextInt(9);
+    //   if (buttons[r].letter == 'A') {
+    //     buttons[r].letter = autokey;
+    //     buttons[r].img = autoimg;
+    //     buttons[r].disabled = true;
+    //     print('button - $r is disabled');
+    //     count += 1;
+    //     isplaying = true;
+    //     turn = '${data['player']} Turn';
+    //   }
+    // } while (!isplaying);
+  }
+
+  int aistep() {
+    int num1 = 0;
+    int num2 = 0;
+    int pos = -1;
+
+    //Row;
+    for (int i = 0; i < 7; i += 3) {
+      for (int j = 0; j < 3; j++) {
+        if (buttons[i + j].letter == autokey) {
+          num1 += 1;
+        } else if (buttons[i + j].letter == data['playerkey']) {
+          num2 += 1;
+        } else {
+          pos = i + j;
+        }
       }
-    } while (!isplaying);
+      if (num1 == 2 || num2 == 2) {
+        if (pos != -1) {
+          if (buttons[pos].letter == 'A') return pos;
+        }
+      }
+      num1 = 0;
+      num2 = 0;
+      pos = -1;
+    }
+
+    //Coloumn
+    num1 = 0;
+    num2 = 0;
+    pos = -1;
+    for (int i = 0; i < 3; i++) {
+      for (int j = 0; j < 7; j += 3) {
+        if (buttons[i + j].letter == autokey) {
+          num1 += 1;
+        } else if (buttons[i + j].letter == data['playerkey']) {
+          num2 += 1;
+        } else {
+          pos = i + j;
+        }
+      }
+      if (num1 == 2 || num2 == 2) {
+        if (pos != -1) {
+          if (buttons[pos].letter == 'A') return pos;
+        }
+      }
+      num1 = 0;
+      num2 = 0;
+      pos = -1;
+    }
+
+    //Diagonal
+    num1 = 0;
+    num2 = 0;
+    pos = -1;
+    for (int j = 0; j < 9; j += 4) {
+      if (buttons[j].letter == autokey) {
+        num1 += 1;
+      } else if (buttons[j].letter == data['playerkey']) {
+        num2 += 1;
+      } else {
+        pos = j;
+      }
+    }
+    if (num1 == 2 || num2 == 2) {
+      if (pos != -1) {
+        if (buttons[pos].letter == 'A') return pos;
+      }
+    }
+    num1 = 0;
+    num2 = 0;
+    pos = -1;
+
+    for (int j = 2; j < 7; j += 2) {
+      if (buttons[j].letter == autokey) {
+        num1 += 1;
+      } else if (buttons[j].letter == data['playerkey']) {
+        num2 += 1;
+      } else {
+        pos = j;
+      }
+    }
+    if (num1 == 2 || num2 == 2) {
+      if (pos != -1) {
+        if (buttons[pos].letter == 'A') return pos;
+      }
+    }
+    num1 = 0;
+    num2 = 0;
+    pos = -1;
+
+    if (buttons[4].letter == 'A') {
+      return 4;
+    }
+    print('${buttons[0].letter} is 0th button');
+    if (buttons[0].letter == 'A') {
+      return 0;
+    }
+    if (buttons[2].letter == 'A') {
+      return 2;
+    }
+    if (buttons[6].letter == 'A') {
+      return 6;
+    }
+    if (buttons[8].letter == 'A') {
+      return 8;
+    }
+
+    if (buttons[1].letter == 'A') {
+      return 1;
+    }
+    if (buttons[3].letter == 'A') {
+      return 3;
+    }
+    if (buttons[5].letter == 'A') {
+      return 5;
+    }
+    if (buttons[7].letter == 'A') {
+      return 7;
+    }
+
+    return -1;
   }
 
   @override
